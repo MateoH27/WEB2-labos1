@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "npm run clean && tsc && npm run copy-views && npm run copy-public",
+    "build": "npm run clean; tsc; npm run copy-views; npm run copy-public",
     "clean": "rm -rf dist",
     "copy-views": "cp -r src/views/ dist/views/",
     "copy-public": "cp -r public/ dist/public & exit 0",
