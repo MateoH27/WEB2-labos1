@@ -1,0 +1,16 @@
+html
+    head 
+        title Stvori natjecanje
+    body
+        div
+            a(href='/competition') Natrag
+        form(action="/makeCompetition" method="post")
+            p Ime natjecanja
+                input(type="text" name="name" id="1" value="")
+            p Natjecatelji (odvojite vrijednosti s ;)
+                input(type="text" name="competitors" id="2" value="")
+            p Sustav bodovanja
+                select(name="typeOfCompetition")
+                    option(name="typeOfCompetition" id="3" value="1") 0/0 (win-loss)
+                    option(name="typeOfCompetition" id="4" value="0") 0/0/0 (win-tie-loss)
+            input(type='submit' value='Generiraj')

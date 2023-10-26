@@ -1,0 +1,37 @@
+html
+    head 
+        title Natjecanja
+        style
+            include ../../public/css/competition.css
+    body
+        div
+            a(href='/generate') Stvori novo natjecanje
+        div
+            a(href='/') Povratak na početnu stranicu
+        br
+        each [key, value] of map
+            br
+            div.nameOfCompetiton= key.name
+                table.competitionTable
+                    tr
+                        th Name
+                        th Victory
+                        if key.typeofcompetition == 0
+                            th Tied
+                        th Losses
+                        th Points
+                    each n in value
+                        tr
+                        td= n.name
+                        td= n.victory
+                        if key.typeofcompetition == 0
+                            td= n.tied
+                        td= n.losses
+                        td= n.points
+                if authID.includes(value[0].fk_id)
+                    div.update
+                        a(href="/updateCompetition?param="+value[0].fk_id)
+                            button(type="button" id=value[0].fk_id name=value[0].fk_id value=value[0].fk_id) Uredi
+                else
+                    div.update
+                        button(type="button" id="" name="" value="" disabled) Uredi

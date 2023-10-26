@@ -1,0 +1,13 @@
+### VS Code ###
+.vscode/
+dist/
+
+### NodeJS ###
+node_modules/
+
+### Environment ###
+.env
+
+### Cerificates ###
+server.cert
+server.key

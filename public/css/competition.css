@@ -1,0 +1,22 @@
+.nameOfCompetiton {
+    padding-left: 30px;
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.competitionTable {
+    text-align: center;
+    border-collapse: collapse;
+    width: 30%;
+}
+td {
+    background-color: lightblue;
+    border: 2px solid grey;
+}
+th {
+    background-color: cyan;
+    border: 2px solid grey;
+}
+.update {
+    margin-top: 10px;
+}
