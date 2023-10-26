@@ -4,12 +4,13 @@ import {auth} from 'express-openid-connect'
 import https from 'https'
 import fs from 'fs'
 import dotenv from 'dotenv'
-import pool from './connections'
+import pool from './databaseConfig'
 import tables from './tables'
 
 
 const app = express();
-const PORT = 4080;
+const externalUrl = process.env.RENDER_EXTERNAL_URL
+const PORT = externalUrl && process.env.PORT ? parseInt(process.env.PORT) : 4080;
 dotenv.config()
 
 app.use(express.static('public'));
@@ -21,7 +22,7 @@ const config = {
   authRequired : false,
   idpLogout : true,
   secret: process.env.SECRET,
-  baseURL: `https://localhost:${PORT}`,
+  baseURL: externalUrl || `https://localhost:${PORT}`,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: 'https://web-labos.eu.auth0.com',
   clientSecret: process.env.CLIENT_SECRET,
@@ -232,10 +233,16 @@ app.post('/makeCompetition', async (req, res) => {
     }
     res.redirect(302, '/competition');
 });
-
-https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}, app).listen(PORT, function() {
-  console.log(`Server is running on https://localhost:${PORT}`);
-})
+if (externalUrl) {
+  const hostname = '0.0.0.0'
+  app.listen(PORT, hostname, () => {
+    console.log(`Server locally running at https://${hostname}:${PORT}/ and from outside on ${externalUrl}`)
+  })
+} else {
+  https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+  }, app).listen(PORT, function() {
+    console.log(`Server is running on https://localhost:${PORT}`);
+  })
+}
