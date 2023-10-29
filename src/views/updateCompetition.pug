@@ -61,5 +61,9 @@ html
                                         else
                                             span.inputButton
                                                 input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2 disabled)
-                        span.save
-                            input(type='submit' value='Spremi')
+                        if check
+                            span.save
+                                input(type='submit' value='Spremi')
+                        else
+                            span.save
+                                input(type='submit' value='Spremi' disabled)
