@@ -1,13 +1,15 @@
 html 
     head 
         title WEB-labos1
+        style
+            include ../../public/css/index.css
     body
         if username
-            h1 Welcome #{username}
-        ul
-            if username
-                li.links: a(href='/competition') Generiraj natjecanje              
-                li: form(action="/logout", method="get")
-                    input(type="submit", value="Logout " + username)
-            else
-                li.links: a(href='/login', title='Prijava') Prijava
+            h1 Dobrodošao #{username}
+            a(href='/competition')            
+                button.links Generiraj natjecanje
+            div.logout: form(action="/logout", method="get")
+                input(type="submit", value="Logout " + username)
+        else
+            a(href='/login', title='Prijava')
+                button.links Prijava

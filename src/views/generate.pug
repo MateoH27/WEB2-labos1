@@ -1,16 +1,21 @@
 html
     head 
         title Stvori natjecanje
+        style
+            include ../../public/css/generate.css
     body
         div
-            a(href='/competition') Natrag
+            a(href='/competition')
+                button.links Natrag
+        if err
+            div.error= err
         form(action="/makeCompetition" method="post")
-            p Ime natjecanja
-                input(type="text" name="name" id="1" value="")
-            p Natjecatelji (odvojite vrijednosti s ;)
-                input(type="text" name="competitors" id="2" value="")
-            p Sustav bodovanja
+            p.text Ime natjecanja
+                input.value(type="text" name="name" id="1" value="")
+            p.text Natjecatelji (odvojite vrijednosti s ";")
+                input.value(type="text" name="competitors" id="2" value="")
+            p.text Sustav bodovanja
                 select(name="typeOfCompetition")
-                    option(name="typeOfCompetition" id="3" value="1") 0/0 (win-loss)
-                    option(name="typeOfCompetition" id="4" value="0") 0/0/0 (win-tie-loss)
-            input(type='submit' value='Generiraj')
+                    option(name="typeOfCompetition" id="3" value="1") 0/0 (pobjeda-poraz)
+                    option(name="typeOfCompetition" id="4" value="0") 0/0/0 (pobjeda-neriješeno-poraz)
+            input.submit(type='submit' value='Generiraj')

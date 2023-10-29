@@ -138,11 +138,18 @@ app.get("/competition", async function (req, res) {
 
 
 app.get("/generate", function (req, res) {
-  res.render("generate.pug")
+  let err = undefined
+  res.render("generate.pug", {err})
 })
 
 app.get("/updateCompetition", async function(req, res) {
   let url = req.url;
+  let wholeUrl;
+  if (externalUrl) {
+    wholeUrl = externalUrl + url
+  } else {
+    wholeUrl = `https://localhost:${PORT}` + url
+  }
   let idOfCompetition = url.substring(url.indexOf("=") + 1)
   let data = []
   let pairs = []
@@ -192,8 +199,7 @@ app.get("/updateCompetition", async function(req, res) {
   var updatedCompetitors = helpArray.sort((a : any, b : any) => parseInt(a.idofcompetitor) - parseInt(b.idofcompetitor));
 
   let competition = name.rows[0]
-
-  res.render("updateCompetition.pug", {updatedCompetitors, newData, onlyOnePair, competition})
+  res.render("updateCompetition.pug", {updatedCompetitors, newData, onlyOnePair, competition, url, wholeUrl})
 })
 
 
@@ -203,9 +209,11 @@ app.post('/makeCompetition', async (req, res) => {
   const typeOfCompetition = req.body.typeOfCompetition
 
   try {
+    if (nameOfCompetition.length < 1) throw new Error("Morate unijeti ime natjecanja")
+    if (competitors.indexOf(';') < 0) throw new Error("Natjecatelji moraju biti odvojeni s ';'")
     var allCompetitors = competitors.split(';')
-    console.log("duljina natjecatelja: " + allCompetitors.length)
-    if (allCompetitors.length < 4 || allCompetitors.length > 8) throw new Error("You can only insert from 4 to 8 competitors!")
+    if (allCompetitors.length < 4 || allCompetitors.length > 8) throw new Error("Možete unijeti samo od 4 do 8 natjecatelja")
+
     await pool.query('BEGIN');
     try {
       await pool.query(`INSERT INTO "competitions" (name, typeofcompetition) VALUES ('${nameOfCompetition}', ${typeOfCompetition});`);
@@ -227,11 +235,11 @@ app.post('/makeCompetition', async (req, res) => {
       }
     }
     await pool.query('COMMIT');
+    res.redirect(302, '/competition');
   } catch (err) {
     await pool.query('ROLLBACK');
-    console.log(err)
+    res.render('generate.pug', {err});
     }
-    res.redirect(302, '/competition');
 });
 if (externalUrl) {
   const hostname = '0.0.0.0'

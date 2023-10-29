@@ -4,22 +4,23 @@ html
         style
             include ../../public/css/competition.css
     body
+        a(href='/')
+            button.links Povratak na početnu stranicu
         div
-            a(href='/generate') Stvori novo natjecanje
-        div
-            a(href='/') Povratak na početnu stranicu
+        a(href='/generate')
+            button.links Stvori novo natjecanje
         br
         each [key, value] of map
             br
             div.nameOfCompetiton= key.name
                 table.competitionTable
                     tr
-                        th Name
-                        th Victory
+                        th Ime natjecatelja
+                        th Pobjeda
                         if key.typeofcompetition == 0
-                            th Tied
-                        th Losses
-                        th Points
+                            th Neriješene
+                        th Izgubljene
+                        th Bodovi
                     each n in value
                         tr
                         td= n.name

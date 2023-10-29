@@ -4,8 +4,10 @@ html
         style
             include ../../public/css/updateCompetitions.css
     body
-        div.return
-            a(href="/competition") Natrag
+        a(href="/competition")
+            button.links Natrag
+        div.link Poveznica za natjecanje:
+            span= wholeUrl
         div.nameOfCompetiton= competition.name
         table.competitionTable
             tr
