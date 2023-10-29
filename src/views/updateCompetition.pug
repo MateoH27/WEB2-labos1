@@ -4,10 +4,11 @@ html
         style
             include ../../public/css/updateCompetitions.css
     body
-        a(href="/competition")
-            button.links Natrag
-        div.link Poveznica za natjecanje:
-            span= wholeUrl
+        if check
+            a(href="/competition")
+                button.links Natrag
+            div.link Poveznica za natjecanje:
+                span= wholeUrl
         div.nameOfCompetiton= competition.name
         table.competitionTable
             tr
@@ -46,11 +47,19 @@ html
                                         span X
                                     if option == 3
                                         span 2
-                                    if option == set.result
-                                        span.inputButton
-                                            input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2 checked)
+                                    if check
+                                        if option == set.result
+                                            span.inputButton
+                                                input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2 checked)
+                                        else
+                                            span.inputButton
+                                                input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2)
                                     else
-                                        span.inputButton
-                                            input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2)
+                                        if option == set.result
+                                            span.inputButton
+                                                input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2 checked disabled)
+                                        else
+                                            span.inputButton
+                                                input(type='radio', id=option, name="option", value=option+","+set.matchid+","+set.idofcompetition+","+set.pair1+","+set.pair2 disabled)
                         span.save
                             input(type='submit' value='Spremi')

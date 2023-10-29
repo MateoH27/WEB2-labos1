@@ -132,14 +132,21 @@ app.get("/competition", async function (req, res) {
     let oneData = pomSet.filter(items => items.fk_id === idOfCompetition);
     map.set(competition, oneData)
   }
-
-  res.render("competition.pug", {newData, authID, competitions, map})
+  if (req.oidc.isAuthenticated()) {
+    res.render("competition.pug", {newData, authID, competitions, map})
+  } else {
+    res.redirect(302, '/')
+  }
 })
 
 
 app.get("/generate", function (req, res) {
   let err = undefined
-  res.render("generate.pug", {err})
+  if (!req.oidc.isAuthenticated()) {
+    res.redirect(302, "/")
+  } else {
+    res.render("generate.pug", {err})
+  }
 })
 
 app.get("/updateCompetition", async function(req, res) {
@@ -199,7 +206,13 @@ app.get("/updateCompetition", async function(req, res) {
   var updatedCompetitors = helpArray.sort((a : any, b : any) => parseInt(a.idofcompetitor) - parseInt(b.idofcompetitor));
 
   let competition = name.rows[0]
-  res.render("updateCompetition.pug", {updatedCompetitors, newData, onlyOnePair, competition, url, wholeUrl})
+  let check = true
+  if (!req.oidc.isAuthenticated()) {
+    url = undefined
+    wholeUrl = undefined
+    check = false
+  }
+  res.render("updateCompetition.pug", {updatedCompetitors, newData, onlyOnePair, competition, url, wholeUrl, check})
 })
 
 
